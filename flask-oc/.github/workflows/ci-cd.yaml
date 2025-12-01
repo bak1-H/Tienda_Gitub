@@ -17,7 +17,7 @@ jobs:
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r flask-oc/requirements.txt
       - name: Lint & minimal tests
         run: |
           python -c "import sys; print('OK: build')"
@@ -27,16 +27,13 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v4
       - name: Trigger Render deploy
         env:
           RENDER_TOKEN: ${{ secrets.RENDER_TOKEN }}
           SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
         run: |
           if [ -z "$RENDER_TOKEN" ] || [ -z "$SERVICE_ID" ]; then
-            echo "Missing RENDER_TOKEN or SERVICE_ID secrets";
-            exit 1;
-          fi
+            echo "Missing RENDER_TOKEN or SERVICE_ID secrets"; exit 1; fi
           curl -s -X POST \
             -H "Authorization: Bearer ${RENDER_TOKEN}" \
             -H "Content-Type: application/json" \
