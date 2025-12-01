@@ -6,7 +6,7 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn 'app.main:create_app()'
     envVars:
-      - key: DATABASE_URL
+      - key: postgresql://mitienda_1dfk_user:vOoOxMy16OtkWpZjWVgEwi0T43ZDR3zZ@dpg-d4mgebje5dus738ahcfg-a.oregon-postgres.render.com/mitienda_1dfk
         sync: false
       - key: SECRET_KEY
         sync: false
