@@ -1,4 +1,4 @@
-services:
+ervices:
   - type: web
     name: flask-oc
     env: python
@@ -13,4 +13,3 @@ services:
     plan: free
     autoDeploy: true
     runtime: python
-    pythonVersion: 3.11
