@@ -1,6 +1,5 @@
 # Proyecto Flask
 
-> Estudiante: proyecto simple que cumple RF1-RF6.
 
 ## Requisitos
 - Python 3.11
@@ -45,29 +44,6 @@ Notas:
 - Agregar `RENDER_TOKEN` y `RENDER_SERVICE_ID` como secrets en GitHub para el workflow.
 - El workflow usa la API de Render para gatillar el deploy del servicio existente.
 
-### Ejemplo de paso de deploy (GitHub Actions)
-En `.github/workflows/ci-cd.yaml` se incluye un paso como este:
-```yaml
-	render-deploy:
-		needs: test
-		runs-on: ubuntu-latest
-		if: github.ref == 'refs/heads/main'
-		steps:
-			- uses: actions/checkout@v4
-			- name: Trigger Render deploy
-				env:
-					RENDER_TOKEN: ${{ secrets.RENDER_TOKEN }}
-					SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
-				run: |
-					curl -X POST \
-						-H "Authorization: Bearer ${RENDER_TOKEN}" \
-						-H "Content-Type: application/json" \
-						https://api.render.com/v1/services/${SERVICE_ID}/deploys \
-						-d '{}'
-```
-Si prefieres Blueprint, Render leerá `render.yaml` al crear el servicio.
-
 ## Nota estudiante
 - Código está comentado de forma básica.
-- Es un ejemplo educativo, no para producción.
  - Si tu contraseña tiene espacios, en `DATABASE_URL` usa `%20` (ej: `cisco%20123`).
