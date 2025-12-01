@@ -4,7 +4,8 @@ services:
     env: python
     rootDir: flask-oc
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn run:app --bind 0.0.0.0:$PORT
+    # Forza el cwd al subdirectorio para que run.py encuentre 'app'
+    startCommand: cd flask-oc && gunicorn run:app --bind 0.0.0.0:$PORT
     pythonVersion: 3.11
     envVars:
       - key: SECRET_KEY
