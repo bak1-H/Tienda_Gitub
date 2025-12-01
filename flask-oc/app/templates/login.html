@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Login</h2>
+<form method="post">
+  <label>Usuario<input name="username" required></label>
+  <label>Contraseña<input type="password" name="password" required></label>
+  <button type="submit">Ingresar</button>
+</form>
+<p>Tip estudiante: visita <a href="/auth/seed">/auth/seed</a> para crear usuario admin/admin.</p>
+{% endblock %}

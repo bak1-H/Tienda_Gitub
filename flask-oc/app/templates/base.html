@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Tienda Productos Mineria</title>
+  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+</head>
+<body>
+  <header>
+    <h1>Tienda Productos Mineria</h1>
+    <nav>
+      <a href="/">Menú</a>
+      <a href="/auth/logout">Cerrar sesión</a>
+    </nav>
+  </header>
+  <main>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for m in messages %}<li>{{ m }}</li>{% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

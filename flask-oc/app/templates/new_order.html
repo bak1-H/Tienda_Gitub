@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Nueva Orden</h2>
+<form method="post">
+  <label>Número de orden<input name="order_number" required></label>
+  <label>Cliente<input name="customer_name" required></label>
+  <label>Dirección<input name="address" required></label>
+  <label>Teléfono<input name="phone" required></label>
+  <label>Comuna<input name="commune" required></label>
+  <label>Región<input name="region" required></label>
+  <h3>Productos</h3>
+  <div id="items">
+    <div class="item">
+      <label>Nombre<input name="product_name"></label>
+      <label>Precio<input name="product_price" type="number" step="0.01"></label>
+      <label>Cantidad<input name="product_qty" type="number" value="1"></label>
+    </div>
+  </div>
+  <button type="button" onclick="addItem()">Agregar producto</button>
+  <button type="submit">Guardar</button>
+</form>
+<script>
+function addItem(){
+  const d = document.createElement('div');
+  d.className = 'item';
+  d.innerHTML = '<label>Nombre<input name="product_name"></label>'+
+    '<label>Precio<input name="product_price" type="number" step="0.01"></label>'+
+    '<label>Cantidad<input name="product_qty" type="number" value="1"></label>';
+  document.getElementById('items').appendChild(d);
+}
+</script>
+{% endblock %}

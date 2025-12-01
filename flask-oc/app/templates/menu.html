@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Menú principal</h2>
+<a href="/order/new">Nueva orden</a>
+<table>
+  <tr><th>#</th><th>Cliente</th><th>Estado</th><th>Acciones</th></tr>
+  {% for o in orders %}
+  <tr>
+    <td>{{ o.order_number }}</td>
+    <td>{{ o.customer_name }}</td>
+    <td>{{ o.status }}</td>
+    <td>
+      <form action="/invoices/create/{{ o.id }}" method="post" style="display:inline">
+        <button {% if o.status != 'pendiente' %}disabled{% endif %}>Facturar</button>
+      </form>
+      <a href="/invoices/{{ o.id }}">Ver factura</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
