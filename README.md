@@ -1,4 +1,4 @@
-# Proyecto Flask Órdenes de Compra (Educacional)
+# Proyecto Flask
 
 > Estudiante: proyecto simple que cumple RF1-RF6.
 
