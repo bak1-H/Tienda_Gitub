@@ -1,21 +1,51 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>Menú principal</h2>
-<a href="/order/new">Nueva orden</a>
-<table>
-  <tr><th>#</th><th>Cliente</th><th>Estado</th><th>Acciones</th></tr>
-  {% for o in orders %}
-  <tr>
-    <td>{{ o.order_number }}</td>
-    <td>{{ o.customer_name }}</td>
-    <td>{{ o.status }}</td>
-    <td>
-      <form action="/invoices/create/{{ o.id }}" method="post" style="display:inline">
-        <button {% if o.status != 'pendiente' %}disabled{% endif %}>Facturar</button>
-      </form>
-      <a href="/invoices/{{ o.id }}">Ver factura</a>
-    </td>
-  </tr>
-  {% endfor %}
-</table>
+    <h2 class="mb-4">Menú principal</h2>
+    
+    <div class="mb-4">
+        <a href="/order/new" class="btn btn-success btn-lg">
+            <i class="bi bi-plus-circle-fill me-2"></i>Nueva orden
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Cliente</th>
+                    <th>Estado</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for o in orders %}
+                <tr>
+                    <td>{{ o.order_number }}</td>
+                    <td>{{ o.customer_name }}</td>
+                    
+                    <td>
+                        {% if o.status == 'pendiente' %}
+                            <span class="badge bg-warning text-dark">{{ o.status }}</span>
+                        {% elif o.status == 'facturado' %}
+                            <span class="badge bg-success">{{ o.status }}</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{{ o.status }}</span>
+                        {% endif %}
+                    </td>
+                    
+                    <td class="text-center">
+                        <form action="/invoices/create/{{ o.id }}" method="post" class="d-inline me-2">
+                            <button type="submit" class="btn btn-sm btn-info" {% if o.status != 'pendiente' %}disabled{% endif %}>
+                                Facturar
+                            </button>
+                        </form>
+                        <a href="/invoices/{{ o.id }}" class="btn btn-sm btn-outline-secondary">Ver factura</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
