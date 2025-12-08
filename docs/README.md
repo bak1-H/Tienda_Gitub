@@ -133,6 +133,61 @@ La app carga `.env` automáticamente.
 - RF5: Despacho marca como "despachada" y guarda nota.
 - RF6: CI/CD con GitHub Actions y despliegue a Render.
 
+## Arquitectura del Sistema
+- App Flask: `run.py` (entry) y carpeta `app/` con módulos.
+- Módulos:
+   - `auth.py`: Login/Logout y Registro.
+   - `orders.py`: RF1 y RF3 (crear y listar órdenes).
+   - `invoices.py`: RF4 (emitir factura, IVA 19%).
+   - `shipments.py`: RF5 (despacho con nota).
+   - `models.py`: ORM SQLAlchemy (User, Order, Product, OrderItem, Invoice, Shipment).
+   - `main.py`: Factory `create_app`, registra blueprints y ejecuta `db.create_all()`.
+- Templates: Bootstrap en `templates/` (`base`, `login`, `register`, `menu`, `new_order`, `invoice`).
+- Persistencia: PostgreSQL (o SQLite local). Conexión vía `SQLAlchemy`.
+
+## Base de Datos (DER y físico)
+- Entidades:
+   - `User(id, username, password_hash)`
+   - `Order(id, order_number, customer_name, address, phone, commune, region, status, created_at)`
+   - `Product(id, name, price)`
+   - `OrderItem(id, order_id FK, product_id FK, quantity)`
+   - `Invoice(id, order_id FK unique, iva_rate, total_net, total_iva, total_with_tax, created_at)`
+   - `Shipment(id, invoice_id FK, note, dispatched_at)`
+- Relaciones:
+   - `Order 1..* OrderItem` (una orden tiene múltiples ítems).
+   - `Order 1..1 Invoice` (una orden tiene una factura).
+   - `Invoice 1..1 Shipment` (despacho asociado a factura).
+- Diagrama (texto):
+   - User (login)
+   - Order ──< OrderItem >── Product
+   - Order ──1:1── Invoice ──1:1── Shipment
+
+Notas:
+- `order_number` es único para evitar duplicados.
+- Totales de `Invoice` se calculan a partir de `OrderItem` + IVA 19%.
+
+## Flujo del Sistema (OC → Factura → Despacho)
+1. Ingreso OC (RF1): Usuario autenticado crea Orden con datos de cliente y productos.
+2. Menú (RF3): Lista órdenes, permite facturar o ver detalle.
+3. Emisión de Factura (RF4): Seleccionar OC → calcular neto + IVA 19% → guardar `Invoice` y cambiar estado a "facturada".
+4. Despacho (RF5): Desde la factura → marcar despachado con nota → crear `Shipment` y estado "despachada" en la OC.
+5. Login/Logout (RF2): Control de acceso al menú y acciones.
+
+## Conclusiones y cierre
+- Aprendizajes: 
+   - Uso de Flask + SQLAlchemy + Flask-Login.
+   - Cálculo de IVA y persistencia de estados.
+   - Despliegue en Render (Blueprint vs Web Service) y CI/CD básico.
+- Dificultades:
+   - Configurar `DATABASE_URL` con `psycopg` v3 (`postgresql+psycopg://`).
+   - Rutas de build/start en Render cuando el proyecto está en subcarpeta.
+   - Evitar duplicados en `order_number` y manejar errores de integridad.
+- Mejoras:
+   - Validaciones más completas (precio/cantidad, formularios WTForms).
+   - Migraciones con Alembic y pruebas unitarias/integración.
+   - Roles de usuario (admin/operador) y paginación en listado.
+   - N° de factura amigable (ej: `F-000123`) derivado del `id`.
+
 Notas:
 - El número de orden es único. Si repites, verás un mensaje: "Número de orden ya existe".
 - Los productos aceptan nombre, precio y cantidad. Las líneas vacías se omiten.
@@ -142,3 +197,7 @@ Notas:
 - Variables: `SECRET_KEY`, `DATABASE_URL`.
 - Agregar `RENDER_TOKEN` y `RENDER_SERVICE_ID` como secrets en GitHub para el workflow.
 - El workflow usa la API de Render para gatillar el deploy del servicio existente.
+
+## Manual de Usuario
+- Consulta el manual paso a paso en `docs/user-manual.md`.
+- Contiene: acceso, creación de órdenes, facturación, despacho, estados, y solución de problemas.
