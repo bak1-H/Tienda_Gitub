@@ -26,7 +26,7 @@ class Order(db.Model):
     phone = db.Column(db.String(30), nullable=False)
     commune = db.Column(db.String(80), nullable=False)
     region = db.Column(db.String(80), nullable=False)
-    status = db.Column(db.String(30), default="pendiente")  # pendiente, facturada, despachada
+    status = db.Column(db.String(30), default="pendiente")
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     items = db.relationship('OrderItem', backref='order', cascade="all, delete-orphan")
@@ -35,7 +35,8 @@ class Order(db.Model):
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
-    price = db.Column(db.Float, nullable=False)
+    # CAMBIO: Usar Integer para almacenar el precio en centavos. Ej: $10.50 -> 1050
+    price = db.Column(db.Integer, nullable=False) 
 
 class OrderItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -48,10 +49,13 @@ class OrderItem(db.Model):
 class Invoice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'), unique=True)
-    iva_rate = db.Column(db.Float, default=0.19)  # 19%
-    total_net = db.Column(db.Float, default=0.0)
-    total_iva = db.Column(db.Float, default=0.0)
-    total_with_tax = db.Column(db.Float, default=0.0)
+    iva_rate = db.Column(db.Float, default=0.19) 
+    
+    # CAMBIOS: Usar Integer para todos los totales monetarios (en centavos)
+    total_net = db.Column(db.Integer, default=0)
+    total_iva = db.Column(db.Integer, default=0)
+    total_with_tax = db.Column(db.Integer, default=0)
+    
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Shipment(db.Model):

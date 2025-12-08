@@ -1,32 +1,99 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>Nueva Orden</h2>
-<form method="post">
-  <label>Número de orden<input name="order_number" required></label>
-  <label>Cliente<input name="customer_name" required></label>
-  <label>Dirección<input name="address" required></label>
-  <label>Teléfono<input name="phone" required></label>
-  <label>Comuna<input name="commune" required></label>
-  <label>Región<input name="region" required></label>
-  <h3>Productos</h3>
-  <div id="items">
-    <div class="item">
-      <label>Nombre<input name="product_name"></label>
-      <label>Precio<input name="product_price" type="number" step="0.01"></label>
-      <label>Cantidad<input name="product_qty" type="number" value="1"></label>
+<div class="row justify-content-center">
+    <div class="col-lg-10 col-xl-8">
+        <h2 class="mb-4 text-primary">📦 Nueva Orden</h2>
+        
+        <form method="post" class="p-4 border rounded shadow-sm bg-white">
+            
+            <h3 class="border-bottom pb-2 mb-3">Datos del Pedido y Cliente</h3>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="order_number" class="form-label">Número de orden</label>
+                    <input type="text" name="order_number" id="order_number" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="customer_name" class="form-label">Cliente</label>
+                    <input type="text" name="customer_name" id="customer_name" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="address" class="form-label">Dirección</label>
+                <input type="text" name="address" id="address" class="form-control" required>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <label for="phone" class="form-label">Teléfono</label>
+                    <input type="text" name="phone" id="phone" class="form-control" required>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <label for="commune" class="form-label">Comuna</label>
+                    <input type="text" name="commune" id="commune" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="region" class="form-label">Región</label>
+                    <input type="text" name="region" id="region" class="form-control" required>
+                </div>
+            </div>
+
+            <h3 class="border-bottom pb-2 mb-3 mt-4">Productos</h3>
+            <div id="items">
+                <div class="item row g-3 mb-3 p-3 border rounded bg-light">
+                    <div class="col-md-6">
+                        <label class="form-label">Nombre del Producto</label>
+                        <input name="product_name" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Precio</label>
+                        <input name="product_price" type="number" step="1" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Cantidad</label>
+                        <input name="product_qty" type="number" value="1" class="form-control">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+                <button type="button" onclick="addItem()" class="btn btn-outline-secondary">
+                    <i class="bi bi-plus-lg me-2"></i>Agregar producto
+                </button>
+                <button type="submit" class="btn btn-primary btn-lg">
+                    Guardar Orden
+                </button>
+            </div>
+        </form>
     </div>
-  </div>
-  <button type="button" onclick="addItem()">Agregar producto</button>
-  <button type="submit">Guardar</button>
-</form>
+</div>
+
 <script>
 function addItem(){
-  const d = document.createElement('div');
-  d.className = 'item';
-  d.innerHTML = '<label>Nombre<input name="product_name"></label>'+
-    '<label>Precio<input name="product_price" type="number" step="0.01"></label>'+
-    '<label>Cantidad<input name="product_qty" type="number" value="1"></label>';
-  document.getElementById('items').appendChild(d);
+    const itemsContainer = document.getElementById('items');
+    // Creamos el div del nuevo producto con las clases de Bootstrap
+    const d = document.createElement('div');
+    d.className = 'item row g-3 mb-3 p-3 border rounded bg-light'; // Estilos para el nuevo bloque
+    
+    // Contenido HTML con los estilos de Bootstrap
+    d.innerHTML = `
+        <div class="col-md-6">
+            <label class="form-label">Nombre del Producto</label>
+            <input name="product_name" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Precio</label>
+            <input name="product_price" type="number" step="0.01" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Cantidad</label>
+            <input name="product_qty" type="number" value="1" class="form-control">
+        </div>
+    `;
+    
+    itemsContainer.appendChild(d);
 }
 </script>
 {% endblock %}
