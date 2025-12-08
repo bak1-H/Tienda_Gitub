@@ -1,5 +1,5 @@
 from flask import Flask
-from dotenv import load_dotenv  # estudiante: cargar .env
+from dotenv import load_dotenv 
 from .config import Config
 from .extensions import db, login_manager
 from .auth import auth_bp
