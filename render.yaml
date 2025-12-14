@@ -3,6 +3,7 @@ services:
     name: flask-oc
     env: python
     rootDir: flask-oc
+    pythonVersion: 3.11
     # requirements.txt está en el directorio raíz del repo
     buildCommand: pip install -r ../requirements.txt
     # Gunicorn arranca el objeto `app` definido en flask-oc/run.py
