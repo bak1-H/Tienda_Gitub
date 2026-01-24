@@ -90,16 +90,6 @@ Archivos clave
 - Autenticación/seed: `flask-oc/app/auth.py`
 - Despliegue plantilla: `render.yaml`
 
-¿Qué hice aquí?
-----------------
-- Recré el `README.md` basándome en el comportamiento real del código (`run.py`, `config.py`, `auth.py`, `models.py`).
-
-Siguiente paso (opcional)
-------------------------
-- ¿Quieres que añada ejemplos de `curl` para autenticación o que automatice la creación de la DB (migrations)?
-# Proyecto Flask Actualizado
-
-
 ## Requisitos
 - Python 3.11
 - Base de datos: PostgreSQL (usa `DATABASE_URL`) o SQLite local por defecto.
